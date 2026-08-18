@@ -50,6 +50,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUST_BACKTRACE: 1
         with:
           tagName: '${{ github.ref_name }}'
           releaseName: 'PRIOR ${{ github.ref_name }}'
@@ -64,7 +65,7 @@ jobs:
             - **Linux (deb)**: `PRIOR_${{ github.ref_name }}_amd64.deb`
           releaseDraft: false
           prerelease: false
-          args: --target x86_64-unknown-linux-gnu
+          args: --target x86_64-unknown-linux-gnu --verbose
 
   release-windows:
     name: Release Windows
@@ -94,6 +95,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUST_BACKTRACE: 1
         with:
           tagName: '${{ github.ref_name }}'
           releaseName: 'PRIOR ${{ github.ref_name }}'
@@ -108,7 +110,7 @@ jobs:
             - **Windows (MSI)**: `PRIOR_${{ github.ref_name }}_x64.msi`
           releaseDraft: false
           prerelease: false
-          args: --target x86_64-pc-windows-msvc
+          args: --target x86_64-pc-windows-msvc --verbose
 
   release-macos:
     name: Release macOS
@@ -138,6 +140,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUST_BACKTRACE: 1
         with:
           tagName: '${{ github.ref_name }}'
           releaseName: 'PRIOR ${{ github.ref_name }}'
@@ -152,4 +155,4 @@ jobs:
             - **macOS (Universal App)**: `PRIOR_${{ github.ref_name }}_universal.app.tar.gz`
           releaseDraft: false
           prerelease: false
-          args: --target universal-apple-darwin
+          args: --target universal-apple-darwin --verbose
