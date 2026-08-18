@@ -1,8 +1,29 @@
 # PRIOR — Persian Todo
 
-A personal, minimal, brutalist todo app with a Jalali calendar and an AI assistant. Built with Tauri v2, React 18, and TypeScript.
+<p align="center">
+  <img src="assets/logo.png" alt="PRIOR Logo" width="120" height="120" style="border-radius: 16px;">
+</p>
 
-![PRIOR App](https://img.shields.io/badge/Tauri-v2-blue?logo=tauri) ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript) ![Tailwind](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss)
+<p align="center">
+  <strong>A personal, minimal, brutalist todo app with a Jalali calendar and an AI assistant.</strong><br>
+  Built with Tauri v2, React 18, and TypeScript.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Tauri-v2-blue?logo=tauri" alt="Tauri v2">
+  <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react" alt="React 18">
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" alt="TypeScript 5">
+  <img src="https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss" alt="Tailwind 3">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
+</p>
+
+---
+
+<p align="center">
+  <img src="assets/mockup.png" alt="PRIOR App Mockup" width="100%">
+</p>
+
+---
 
 ## Features
 
@@ -71,13 +92,13 @@ npm run tauri build
 
 Outputs land in `src-tauri/target/release/bundle/`.
 
-### Custom App Icons (optional)
+### App Icons
+
+Icons are generated from `assets/logo.png` using Tauri's icon generator:
 
 ```bash
-npm run tauri icon path/to/your-logo.png
+npm run tauri icon assets/logo.png
 ```
-
-Placeholder icons included for out-of-the-box builds.
 
 ## Using the AI Assistant (PRIOR)
 
@@ -104,6 +125,9 @@ Placeholder icons included for out-of-the-box builds.
 
 ```
 persian-todo/
+├── assets/
+│   ├── logo.png        # App logo (source for icon generation)
+│   └── mockup.png      # App screenshot for README
 ├── src/
 │   ├── components/
 │   │   ├── TodayView.tsx      # Jalali week strip + agenda
