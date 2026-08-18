@@ -10,7 +10,7 @@ permissions:
 
 env:
   NODE_VERSION: '20'
-  RUST_VERSION: '1.79'
+  RUST_VERSION: '1.85'
 
 jobs:
   release-linux:
