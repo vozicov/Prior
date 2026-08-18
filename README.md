@@ -1,41 +1,69 @@
-# کارها — Persian Todo (Tauri + React)
+# PRIOR — Persian Todo
 
-A personal, Notion/AFFiNE-styled todo app:
+A personal, minimal, brutalist todo app with a Jalali calendar and an AI assistant. Built with Tauri v2, React 18, and TypeScript.
 
-- **Today view** — a Jalali (Persian) week strip + agenda list, with optional time and duration per task.
-- **Board view** — Kanban columns: **New → Doing → Finished**, drag-and-drop, powered by `@dnd-kit`.
-- **AI chat sidebar** — talk to it in Persian or English ("move the report task to doing", "remind me tomorrow at 10am to call the doctor") and it creates/edits/moves/deletes todos through real tool calls, not guesses.
-- **Bring your own model** — Settings accepts any OpenAI-compatible `base_url` + API key + model name (OpenAI, OpenRouter, Groq, Together, a local server, etc). Presets are one click away.
-- Everything is local: SQLite file on your machine, API key stored only in that local DB, and requests go straight from your machine to the API you configured — nothing passes through a third party.
+![PRIOR App](https://img.shields.io/badge/Tauri-v2-blue?logo=tauri) ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript) ![Tailwind](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss)
+
+## Features
+
+- **Today View** — Jalali (Persian) week strip + agenda list with optional time & duration per task
+- **Board View** — Kanban columns: **New → Doing → Finished**, full drag-and-drop via `@dnd-kit`
+- **AI Assistant (PRIOR)** — Natural language in Persian/English creates, edits, moves, deletes todos via real tool calls
+- **Bring Your Own Model** — Any OpenAI-compatible endpoint (OpenAI, OpenRouter, Groq, Together, Ollama, LM Studio, etc.)
+- **100% Local-First** — SQLite on your machine, API key stored locally, direct API calls — no third-party servers
+
+## Design: PRIOR
+
+Minimal, premium, editorial, slightly brutalist aesthetic:
+
+| Color | Hex | Role |
+|-------|-----|------|
+| **Ink** | `#171717` | Primary text |
+| **Paper** | `#F4F0E8` | Background |
+| **Signal** | `#FF5A36` | Primary accent (AI, actions) |
+| **Muted** | `#8B8780` | Secondary text |
+| **Border** | `#DDD7CC` | Dividers, borders |
+
+- Strong typographic hierarchy (custom editorial scale)
+- Generous whitespace, clean 1–2px borders
+- Subtle layered shadows, no gradients/glassmorphism
+- Signal orange as the distinctive accent
 
 ## Stack
 
-- Tauri v2 (Rust shell) — `tauri-plugin-sql` (SQLite) + `tauri-plugin-http` (CORS-free fetch to your AI endpoint)
-- React 18 + TypeScript + Vite + Tailwind
-- `jalaali-js` for Jalali/Gregorian conversion, `@dnd-kit` for drag-and-drop
-- `@fontsource/vazirmatn` — Persian UI font, bundled offline
+| Layer | Technology |
+|-------|------------|
+| Shell | Tauri v2 (Rust) |
+| Database | `tauri-plugin-sql` (SQLite) |
+| Network | `tauri-plugin-http` (CORS-free fetch) |
+| Frontend | React 18 + TypeScript + Vite |
+| Styling | Tailwind CSS (custom design tokens) |
+| Calendar | `jalaali-js` (Jalali/Gregorian conversion) |
+| Drag & Drop | `@dnd-kit` |
+| Font | `@fontsource/vazirmatn` (Persian, bundled offline) |
 
-## Prerequisites (one-time, per machine)
+## Prerequisites
 
-This project was scaffolded and type-checked here, but not compiled — that needs a full Rust + Tauri toolchain with a display, which this sandbox doesn't have. On your own machine:
+1. **Node.js** 18+ and npm
+2. **Rust** — install via [rustup.rs](https://rustup.rs)
+3. **Tauri system dependencies** for your OS — see [official list](https://v2.tauri.app/start/prerequisites/)
+   - macOS: Xcode Command Line Tools
+   - Windows: Microsoft C++ Build Tools + WebView2 (preinstalled on Win 11)
+   - Linux: `webkit2gtk`, `libayatana-appindicator3`, etc.
 
-1. **Node.js** 18+ and npm (you already have this if you're reading this from a working editor).
-2. **Rust** — install via [rustup.rs](https://rustup.rs).
-3. **Tauri system dependencies** for your OS — follow the official list for your platform: https://v2.tauri.app/start/prerequisites/
-   - macOS: Xcode Command Line Tools.
-   - Windows: Microsoft C++ Build Tools + WebView2 (usually preinstalled on Win 11).
-   - Linux: `webkit2gtk`, `libayatana-appindicator3`, etc. — see the link above for your distro's exact package list.
-
-## Run it
+## Quick Start
 
 ```bash
+# Install dependencies
 npm install
+
+# Run in development mode
 npm run tauri dev
 ```
 
-This starts the Vite dev server and opens the native window. First launch creates `todo.db` (SQLite) next to the app's data directory automatically — no setup needed.
+First launch creates `todo.db` (SQLite) in the app data directory automatically.
 
-## Build a native installer
+## Build Native Installer
 
 ```bash
 npm run tauri build
@@ -43,54 +71,83 @@ npm run tauri build
 
 Outputs land in `src-tauri/target/release/bundle/`.
 
-### Regenerate proper app icons (optional)
-
-Placeholder icons are included so the project builds out of the box. To swap in your own:
+### Custom App Icons (optional)
 
 ```bash
 npm run tauri icon path/to/your-logo.png
 ```
 
-## Using the AI assistant
+Placeholder icons included for out-of-the-box builds.
 
-1. Open **Settings** (gear icon in the left rail).
-2. Pick a preset or paste any OpenAI-compatible base URL, e.g.:
+## Using the AI Assistant (PRIOR)
+
+1. Open **Settings** (gear icon in the left rail)
+2. Pick a preset or paste any OpenAI-compatible base URL:
    - OpenAI: `https://api.openai.com/v1`
    - OpenRouter: `https://openrouter.ai/api/v1`
    - Groq: `https://api.groq.com/openai/v1`
-   - A local server (Ollama's OpenAI-compatible endpoint, LM Studio, etc): `http://localhost:11434/v1` or similar
-3. Paste your API key and a model name that supports **tool/function calling** (e.g. `gpt-4o-mini`, `gpt-4o`, most OpenRouter chat models, `llama-3.3-70b-versatile` on Groq).
-4. Open the chat sidebar (spark icon) and just talk to it — it can:
-   - `list_todos` — search/filter your todos
-   - `create_todo` — make a new one, with optional Jalali date/time/duration
-   - `update_todo` — edit title, notes, date, time, duration
-   - `move_todo` — change its column (new/doing/finished)
-   - `delete_todo` — remove it
+   - Together AI: `https://api.together.xyz/v1`
+   - Local (Ollama/LM Studio): `http://localhost:11434/v1`
+3. Paste your API key and a model name supporting **tool/function calling**:
+   - `gpt-4o-mini`, `gpt-4o` (OpenAI)
+   - Most chat models (OpenRouter)
+   - `llama-3.3-70b-versatile` (Groq)
+4. Open the chat sidebar (spark icon) and talk naturally:
+   - *"سازمان فردا ساعت ۱۰ صبح یادم بنداز به دکتر زنگ بزنم"*
+   - *"Move the quarterly report task to Doing"*
+   - *"Show me all tasks for this week"*
+   - *"Delete the old meeting notes task"*
 
-## Project layout
+**Available tools:** `list_todos`, `create_todo`, `update_todo`, `move_todo`, `delete_todo`
+
+## Project Structure
 
 ```
-src/
-  lib/
-    types.ts     shared types (Todo, AppSettings, ChatMessage)
-    jalali.ts     Jalali calendar + Persian digit helpers
-    db.ts         SQLite data access (todos + settings)
-    ai.ts         OpenAI-compatible client + tool-calling loop
-  components/
-    TodayView.tsx    Jalali week strip + agenda
-    BoardView.tsx    Kanban board (dnd-kit)
-    TodoCard.tsx     card + draggable wrapper
-    TodoModal.tsx    create/edit form
-    ChatSidebar.tsx  AI chat panel
-    SettingsModal.tsx  API base_url/key/model config
-src-tauri/
-  src/main.rs        registers the sql + http plugins
-  tauri.conf.json     window, bundle, and CSP config
-  capabilities/default.json   permission scopes for sql/http plugins
+persian-todo/
+├── src/
+│   ├── components/
+│   │   ├── TodayView.tsx      # Jalali week strip + agenda
+│   │   ├── BoardView.tsx      # Kanban board (dnd-kit)
+│   │   ├── TodoCard.tsx       # Task card + draggable wrapper
+│   │   ├── TodoModal.tsx      # Create/edit form
+│   │   ├── ChatSidebar.tsx    # PRIOR AI chat panel
+│   │   └── SettingsModal.tsx  # API config with presets
+│   ├── lib/
+│   │   ├── types.ts           # Todo, AppSettings, ChatMessage types
+│   │   ├── jalali.ts          # Jalali calendar + Persian digit helpers
+│   │   ├── db.ts              # SQLite data access (todos + settings + chat history)
+│   │   └── ai.ts              # OpenAI-compatible client + tool-calling loop
+│   ├── App.tsx                # Main layout + nav rail
+│   ├── main.tsx               # React entry
+│   └── index.css              # Global styles + design system utilities
+├── src-tauri/
+│   ├── src/main.rs            # Registers sql + http plugins
+│   ├── tauri.conf.json        # Window, bundle, CSP config
+│   └── capabilities/default.json  # Permission scopes
+├── tailwind.config.js         # PRIOR design tokens
+├── package.json
+└── README.md
 ```
 
-## Notes & things you may want to tweak
+## Key Implementation Details
 
-- The window CSP is disabled (`"csp": null`) so the app can call whatever AI endpoint you configure without fighting a content-security-policy allowlist. This is fine for a personal single-user app; tighten it if you ever ship this more broadly.
-- Dates are stored as Jalali strings (`"1403-05-24"`) directly in SQLite — simplest for a Jalali-first UI, and what the AI's tools speak natively.
-- Time is a plain `"HH:MM"` 24h string, intended as Tehran local time (there's a `nowTehranTime()` helper in `jalali.ts` if you want to prefill "now").
+- **Chat history persists** across app restarts (stored in SQLite)
+- **Settings apply immediately** — no restart needed after saving API config
+- **Dates stored as Jalali strings** (`"1403-05-24"`) — native to UI and AI tools
+- **Time format** — 24h `"HH:MM"` as Tehran local time
+- **CSP disabled** (`"csp": null`) — allows any configured AI endpoint (personal app)
+- **Keyboard shortcuts in Settings** — `Esc` to close, `Cmd/Ctrl+Enter` to save
+
+## Scripts
+
+```bash
+npm run dev          # Vite dev server only
+npm run build        # TypeScript + Vite production build
+npm run preview      # Preview production build
+npm run tauri dev    # Full Tauri dev (Vite + Rust)
+npm run tauri build  # Full Tauri production build
+```
+
+## License
+
+MIT — feel free to fork and customize for your own workflow.
