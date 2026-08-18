@@ -1,0 +1,276 @@
+@import "@fontsource/vazirmatn/400.css";
+@import "@fontsource/vazirmatn/500.css";
+@import "@fontsource/vazirmatn/600.css";
+@import "@fontsource/vazirmatn/700.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Vazirmatn", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F4F0E8;
+  color: #171717;
+  overflow: hidden;
+  user-select: none;
+  text-rendering: optimizeLegibility;
+}
+
+input,
+textarea,
+select {
+  user-select: text;
+}
+
+/* Persian numerals used across dates/times still lay out left-to-right internally */
+.ltr-digits {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+  font-family: "Vazirmatn", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Slim, brutalist scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #DDD7CC;
+  border-radius: 0;
+  border: none;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8B8780;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #DDD7CC transparent;
+}
+
+/* Focus styles — brutal, visible */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 90, 54, 0.3);
+  border-color: #FF5A36;
+}
+
+/* Selection */
+::selection {
+  background: #FF5A36;
+  color: #F4F0E8;
+}
+
+/* Animations — minimal, snappy */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fade-in 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.animate-slide-up {
+  animation: slide-up 220ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 1.4s ease-in-out infinite;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-in-right,
+  .animate-slide-up,
+  .animate-pulse-subtle {
+    animation: none !important;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Input base styles — brutal, no rounded corners */
+.input-base {
+  @apply w-full bg-white border border-[#DDD7CC] px-4 py-3 text-body text-ink placeholder:text-muted
+         transition-all duration-fast
+         hover:border-[#8B8780]
+         focus:border-signal focus:ring-2 focus:ring-signal/20
+         disabled:bg-[#F4F0E8] disabled:cursor-not-allowed;
+  border-radius: 8px;
+}
+
+.input-base:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 90, 54, 0.25);
+}
+
+/* Button base styles */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-3 text-title font-medium text-white
+         bg-signal border-none
+         hover:bg-[rgba(255,90,54,0.92)] active:bg-[rgba(255,90,54,1)]
+         transition-all duration-fast
+         disabled:opacity-40 disabled:cursor-not-allowed
+         focus-visible:ring-2 focus-visible:ring-signal/30;
+  border-radius: 8px;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-title-sm font-medium text-ink
+         bg-white border border-[#DDD7CC]
+         hover:bg-[#F4F0E8] hover:border-[#8B8780] active:bg-[#E8E2D8]
+         transition-all duration-fast
+         disabled:opacity-40 disabled:cursor-not-allowed
+         focus-visible:ring-2 focus-visible:ring-signal/30;
+  border-radius: 8px;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 px-3 py-2 text-title-sm font-medium text-muted
+         bg-transparent border-none
+         hover:text-ink hover:bg-[#F4F0E8] active:bg-[#E8E2D8]
+         transition-all duration-fast
+         disabled:opacity-40 disabled:cursor-not-allowed;
+  border-radius: 8px;
+}
+
+.btn-destructive {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-title-sm font-medium text-white
+         bg-signal border-none
+         hover:bg-[rgba(255,90,54,0.92)] active:bg-[rgba(255,90,54,1)]
+         transition-all duration-fast
+         disabled:opacity-40 disabled:cursor-not-allowed;
+  border-radius: 8px;
+}
+
+/* Card base */
+.card {
+  @apply bg-white border border-[#DDD7CC] shadow-card;
+  border-radius: 12px;
+}
+
+.card-elevated {
+  @apply bg-white border border-[#DDD7CC] shadow-elevated;
+  border-radius: 12px;
+}
+
+/* Divider */
+.divider {
+  @apply border-t border-[#DDD7CC];
+}
+
+/* Label */
+.label {
+  @apply block text-caption font-medium text-muted uppercase tracking-wider mb-1.5;
+}
+
+/* Status badge */
+.badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 text-caption font-medium rounded-full;
+}
+
+/* Tooltip-like helper */
+.helper-text {
+  @apply text-caption text-muted;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-ink/40 backdrop-blur-sm z-[100] animate-fade-in;
+}
+
+/* Modal content */
+.modal-content {
+  @apply bg-white border border-[#DDD7CC] shadow-elevated z-[101] animate-slide-up;
+  border-radius: 16px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Drag overlay for dnd-kit */
+.drag-overlay {
+  @apply shadow-dragging rotate-[2deg];
+  border-radius: 12px;
+}
+
+/* Droppable active state */
+.droppable-active {
+  @apply bg-signal/5 border-signal;
+}
+
+/* Empty state */
+.empty-state {
+  @apply flex flex-col items-center justify-center py-16 px-8 text-center;
+}
+
+.empty-state-icon {
+  @apply text-muted mb-4 opacity-60;
+}
+
+.empty-state-title {
+  @apply text-title text-ink mb-1;
+}
+
+.empty-state-desc {
+  @apply text-body-sm text-muted max-w-xs;
+}
