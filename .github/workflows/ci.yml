@@ -129,7 +129,13 @@ jobs:
           name: frontend-dist
           path: dist/
 
-      - name: Build Tauri
+      - name: Debug Rust info
+        run: |
+          rustc --version
+          cargo --version
+          rustup show
+
+- name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
