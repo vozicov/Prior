@@ -1,0 +1,155 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+env:
+  NODE_VERSION: '20'
+  RUST_VERSION: '1.79'
+
+jobs:
+  release-linux:
+    name: Release Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Tauri system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            patchelf
+
+      - name: Build Tauri
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: '${{ github.ref_name }}'
+          releaseName: 'PRIOR ${{ github.ref_name }}'
+          releaseBody: |
+            ## PRIOR ${{ github.ref_name }}
+
+            ### Changes
+            See [changelog](https://github.com/${{ github.repository }}/blob/master/CHANGELOG.md) for details.
+
+            ### Downloads
+            - **Linux (AppImage)**: `PRIOR_${{ github.ref_name }}_amd64.AppImage`
+            - **Linux (deb)**: `PRIOR_${{ github.ref_name }}_amd64.deb`
+          releaseDraft: false
+          prerelease: false
+          args: --target x86_64-unknown-linux-gnu
+
+  release-windows:
+    name: Release Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build Tauri
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: '${{ github.ref_name }}'
+          releaseName: 'PRIOR ${{ github.ref_name }}'
+          releaseBody: |
+            ## PRIOR ${{ github.ref_name }}
+
+            ### Changes
+            See [changelog](https://github.com/${{ github.repository }}/blob/master/CHANGELOG.md) for details.
+
+            ### Downloads
+            - **Windows (NSIS Installer)**: `PRIOR_${{ github.ref_name }}_x64-setup.exe`
+            - **Windows (MSI)**: `PRIOR_${{ github.ref_name }}_x64.msi`
+          releaseDraft: false
+          prerelease: false
+          args: --target x86_64-pc-windows-msvc
+
+  release-macos:
+    name: Release macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build Tauri
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: '${{ github.ref_name }}'
+          releaseName: 'PRIOR ${{ github.ref_name }}'
+          releaseBody: |
+            ## PRIOR ${{ github.ref_name }}
+
+            ### Changes
+            See [changelog](https://github.com/${{ github.repository }}/blob/master/CHANGELOG.md) for details.
+
+            ### Downloads
+            - **macOS (Universal DMG)**: `PRIOR_${{ github.ref_name }}_universal.dmg`
+            - **macOS (Universal App)**: `PRIOR_${{ github.ref_name }}_universal.app.tar.gz`
+          releaseDraft: false
+          prerelease: false
+          args: --target universal-apple-darwin
