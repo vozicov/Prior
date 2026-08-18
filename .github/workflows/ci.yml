@@ -135,7 +135,7 @@ jobs:
           cargo --version
           rustup show
 
-- name: Build Tauri
+      - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
